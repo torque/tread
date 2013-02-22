@@ -1,10 +1,13 @@
 bencode = (obj) ->
 	encstr = (str) -> str.length + ':' + str
+	
 	encint = (num) -> "i#{num}e"
+	
 	enclist = (list) ->
 		buf = 'l'
 		buf += bencode i for i in list
 		buf + 'e'
+	
 	encdict = (dict) ->
 		buf = 'd'
 		buf += encstr(k) + bencode(dict[k]) for k in Object.keys(dict).sort()
@@ -22,19 +25,13 @@ bencode = (obj) ->
 				throw new Error('This is an evil object.')
 		else
 			throw new Error('This is an evil ???.')
-	return out
-
-charWidth = (str) ->
-    /%u/.test escape str 
+	out
 
 bdecode = (str, start) ->
 	caret = start || 0 # state?
 	match = str[caret..-1].match(/([ilde]|\d+?:)/) # regular expression solve all problem
 	return [null, caret] unless match? # because otherwise it asploads
-	if match.index != 0
-		console.log str[1..caret]
-		console.log 'Caret is at '+caret
-		throw new Error('Non-kosher Match.') 
+	throw new Error 'Non-kosher Match.' if match.index != 0
 	caret += match[1].length
 	if match[1].length > 1 # trim colon
 		match[0] = 's' # cheating and confusion
@@ -44,14 +41,17 @@ bdecode = (str, start) ->
 		# console.log 'strlen: '+len
 		caret += len
 		cutstr = str[caret-len...caret]
-		cutstr = decodeURIComponent escape cutstr if cutstr.length < 256
+		# Magic number. Most file systems don't allow filenames longer than 255 UTF-16 encoding units.
+		try cutstr = decodeURIComponent escape cutstr if len < 512
 		[cutstr, caret] # gotta love implicit coffee-script returns (or hate. or any other emotion).
+
 	decint = () ->
 		# we leave pure regular expression decoding as an exercise for the reader.
 		match = str[caret..-1].match(/^(\d+?)e/)
 		throw new Error('Error: integer underflow.') unless match?
 		caret += match[0].length
 		[parseInt(match[1], 10), caret]
+
 	declist = () ->
 		list = []
 		loop # for(;;)
@@ -59,6 +59,7 @@ bdecode = (str, start) ->
 			break unless val?
 			list.push val
 		[list, caret]
+
 	decdict = () ->
 		dict = {}
 		loop # round and round the loop goes, when it will end nobody knows.
@@ -66,6 +67,7 @@ bdecode = (str, start) ->
 			break unless key?
 			[dict[key], caret] = bdecode str, caret
 		[dict, caret]
+
 	end = () ->
 		return [null, caret]
 
