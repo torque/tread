@@ -10,7 +10,15 @@
 	</head>
 	<body id='body'>
 		<div id='drop' ng-controller="TorrentDisplay" ng-cloak>
-			<div ng-repeat="file in torrent.info.files" class='filecell' ng-bind-html-unsafe="fileView(file)"></div>
+			<div ng-show="!torrent" class='start'>DROP A TORRENT FILE ON ME</div>
+			<div ng-repeat="file in torrent.info.files" class='filecell'>
+				<div class='size'>{{humanize(file.length)}}</div>
+				<div class='filename'>{{fileView(file)}}</div>
+			</div>
+			<div ng-show='singular()' class='filecell'>
+				<div class='size'>{{humanize(torrent.info.length)}}</div>
+				<div class='filename'>{{baseName}}</div>
+			</div>
 		</div>
 	</body>
 </html>

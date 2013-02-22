@@ -3,7 +3,7 @@ document.ondrop = () -> false
 document.ondragover = () -> false
 
 (TorrentDisplay = (viewer) ->
-	viewer.torrent = {}
+	viewer.torrent = null
 
 	document.getElementById('body').ondrop = (ev) ->
 		console.log 'dropped'
@@ -11,13 +11,16 @@ document.ondragover = () -> false
 		start = 0
 		fr.onload = (ev) ->
 			start = new Date()
+			document.title = 'Loading...'
 		fr.onloadend = (ev) ->
 			torrent = bdecode(ev.target.result)[0]
+			parsed = new Date()
+			console.log "Torrent parsed in #{parsed-start}ms."
 			viewer.$apply () ->
 				viewer.baseName = torrent.info.name
 				viewer.torrent = torrent
+			document.title = viewer.baseName
 			console.log viewer.torrent
-			console.log "Parsed in #{new Date()-start}ms"
 		fr.readAsBinaryString ev.dataTransfer.files[0]
 		false
 
@@ -27,10 +30,22 @@ document.ondragover = () -> false
 	$('#body').on 'dragleave', (ev) ->
 		console.log 'Drag left.'
 
+	viewer.singular = () ->
+		!viewer.torrent.info.files if viewer.torrent # seems to be ok without an else
+		
 	viewer.fileView = (file) ->
-		filePath = viewer.baseName
+		filePath = ""
 		for path in file.path
-			filePath += '/'+path
-		"#{filePath}"
+			filePath += path + '/'
+		filePath[0..-2] # maybe a better way to do this.
+
+	viewer.humanize = (num) ->
+		post = [' B', ' KiB', ' MiB', ' GiB', ' TiB', ' PiB', ' EiB', ' ZiB', ' YiB']
+		dum = num
+		count = 0
+		while Math.floor dum
+			dum /= 1024
+			count++
+		Math.round(num/(Math.pow(1024,(count-1)))*1000)/1000 + post[count-1] # allow things like 1023 KiB but I don't care.
 
 ).$inject = ['$scope']
