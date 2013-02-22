@@ -10,24 +10,27 @@ document.ondragover = function() {
 };
 
 (TorrentDisplay = function(viewer) {
-  viewer.torrent = {};
+  viewer.torrent = null;
   document.getElementById('body').ondrop = function(ev) {
     var fr, start;
     console.log('dropped');
     fr = new FileReader();
     start = 0;
     fr.onload = function(ev) {
-      return start = new Date();
+      start = new Date();
+      return document.title = 'Loading...';
     };
     fr.onloadend = function(ev) {
-      var torrent;
+      var parsed, torrent;
       torrent = bdecode(ev.target.result)[0];
+      parsed = new Date();
+      console.log("Torrent parsed in " + (parsed - start) + "ms.");
       viewer.$apply(function() {
         viewer.baseName = torrent.info.name;
         return viewer.torrent = torrent;
       });
-      console.log(viewer.torrent);
-      return console.log("Parsed in " + (new Date() - start) + "ms");
+      document.title = viewer.baseName;
+      return console.log(viewer.torrent);
     };
     fr.readAsBinaryString(ev.dataTransfer.files[0]);
     return false;
@@ -38,14 +41,30 @@ document.ondragover = function() {
   $('#body').on('dragleave', function(ev) {
     return console.log('Drag left.');
   });
-  return viewer.fileView = function(file) {
+  viewer.singular = function() {
+    if (viewer.torrent) {
+      return !viewer.torrent.info.files;
+    }
+  };
+  viewer.fileView = function(file) {
     var filePath, path, _i, _len, _ref;
-    filePath = viewer.baseName;
+    filePath = "";
     _ref = file.path;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       path = _ref[_i];
-      filePath += '/' + path;
+      filePath += path + '/';
     }
-    return "" + filePath;
+    return filePath.slice(0, -1);
+  };
+  return viewer.humanize = function(num) {
+    var count, dum, post;
+    post = [' B', ' KiB', ' MiB', ' GiB', ' TiB', ' PiB', ' EiB', ' ZiB', ' YiB'];
+    dum = num;
+    count = 0;
+    while (Math.floor(dum)) {
+      dum /= 1024;
+      count++;
+    }
+    return Math.round(num / (Math.pow(1024, count - 1)) * 1000) / 1000 + post[count - 1];
   };
 }).$inject = ['$scope'];
