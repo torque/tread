@@ -12,12 +12,12 @@
 		<div id='drop' ng-controller="TorrentDisplay" ng-cloak>
 			<div ng-show="!torrent" class='start'>DROP A TORRENT FILE ON ME</div>
 			<div ng-repeat="file in torrent.info.files" class='filecell'>
-				<div class='size'>{{humanize(file.length)}}</div>
-				<div class='filename'>{{fileView(file)}}</div>
+				<div class='size'><span class='text'>{{humanize(file.length)}}</span></div>
+				<div class='filename'><span class='text'>{{fileView(file)}}</span></div>
 			</div>
 			<div ng-show='singular()' class='filecell'>
-				<div class='size'>{{humanize(torrent.info.length)}}</div>
-				<div class='filename'>{{baseName}}</div>
+				<div class='size'><span class='text'>{{humanize(torrent.info.length)}}</span></div>
+				<div class='filename'><span class='text'>{{baseName}}</span></div>
 			</div>
 		</div>
 	</body>

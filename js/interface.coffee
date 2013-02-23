@@ -31,13 +31,15 @@ document.ondragover = () -> false
 		console.log 'Drag left.'
 
 	viewer.singular = () ->
-		!viewer.torrent.info.files if viewer.torrent # seems to be ok without an else
+		return !viewer.torrent.info.files if viewer.torrent # seems to be ok without an else
+		null
 		
 	viewer.fileView = (file) ->
 		filePath = ""
-		for path in file.path
-			filePath += path + '/'
-		filePath[0..-2] # maybe a better way to do this.
+		# for path in file.path
+		# 	filePath += path + '/'
+		# filePath[0..-2] # maybe a better way to do this.
+		file.path[file.path.length-1]
 
 	viewer.humanize = (num) ->
 		post = [' B', ' KiB', ' MiB', ' GiB', ' TiB', ' PiB', ' EiB', ' ZiB', ' YiB']
@@ -46,6 +48,6 @@ document.ondragover = () -> false
 		while Math.floor dum
 			dum /= 1024
 			count++
-		Math.round(num/(Math.pow(1024,(count-1)))*1000)/1000 + post[count-1] # allow things like 1023 KiB but I don't care.
+		Math.round(num/(Math.pow(1024,(count-1)))*100)/100 + post[count-1] # allow things like 1023 KiB but I don't care.
 
 ).$inject = ['$scope']

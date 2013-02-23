@@ -45,16 +45,12 @@ document.ondragover = function() {
     if (viewer.torrent) {
       return !viewer.torrent.info.files;
     }
+    return null;
   };
   viewer.fileView = function(file) {
-    var filePath, path, _i, _len, _ref;
+    var filePath;
     filePath = "";
-    _ref = file.path;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      path = _ref[_i];
-      filePath += path + '/';
-    }
-    return filePath.slice(0, -1);
+    return file.path[file.path.length - 1];
   };
   return viewer.humanize = function(num) {
     var count, dum, post;
@@ -65,6 +61,6 @@ document.ondragover = function() {
       dum /= 1024;
       count++;
     }
-    return Math.round(num / (Math.pow(1024, count - 1)) * 1000) / 1000 + post[count - 1];
+    return Math.round(num / (Math.pow(1024, count - 1)) * 100) / 100 + post[count - 1];
   };
 }).$inject = ['$scope'];
