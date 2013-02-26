@@ -2,23 +2,24 @@
 <html ng-app>
 	<head>
 		<title>derpherp</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/ICanHaz.min.js"></script>
 		<script src="js/bencode.js"></script>
+		<script src="js/backend.js"></script>
 		<script src="js/interface.js"></script>
+		<script id='filelist' type="text/html">
+			{{#files}}
+			<div class='filecell'>
+				<div class='size'><span class='text'>{{size}}</span></div>
+				<div class='filename'><span class='text'>{{name}}</span></div>
+			</div>
+			{{/files}}
+		</script>
 		<link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8"/>
 	</head>
 	<body id='body'>
-		<div id='drop' ng-controller="TorrentDisplay" ng-cloak>
-			<div ng-show="!torrent" class='start'>DROP A TORRENT FILE ON ME</div>
-			<div ng-repeat="file in torrent.info.files" class='filecell'>
-				<div class='size'><span class='text'>{{humanize(file.length)}}</span></div>
-				<div class='filename'><span class='text'>{{fileView(file)}}</span></div>
-			</div>
-			<div ng-show='singular()' class='filecell'>
-				<div class='size'><span class='text'>{{humanize(torrent.info.length)}}</span></div>
-				<div class='filename'><span class='text'>{{baseName}}</span></div>
-			</div>
+		<div id='drop'>
+			<div class='start'>DROP A TORRENT FILE ON ME</div>
 		</div>
 	</body>
 </html>
