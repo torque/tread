@@ -1,8 +1,3 @@
-@-webkit-keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
 body {
 	position: absolute;
 	margin: 0 0 0 0;
@@ -12,65 +7,60 @@ body {
 }
 
 .start {
-		position: relative;
-		font-size: 50px;
-		max-width: 100%;
-		text-align: center;
-		color: #333;
-		padding: 20px 20px 20px 20px;
-		border-radius: 8px;
-		// text-shadow: #252540 0 0 3px, #252540 0 0 4px, #252540 0 0 5px;
-	}
-	#drop {
-		position: relative;
-		padding: 20px 20px 20px 20px;
-		max-width: 100%;
-		// -webkit-transition: all 1s linear;
-	}
-	.filename {
-		position: relative;
-		// border: 2px solid black;
-		// border-left: 1px solid #313131;
-		padding: 15px 10px 5px 10px;
-		margin-left: 0px;
-		height: 45px;
-		max-width: 100%;
-		border-bottom-right-radius: 8px;
-		border-top-right-radius: 8px;
-		font-size: 30px;
-		color: #555;
-		white-space: nowrap;
-		background-color: #252525;
-		overflow-x: hidden;
-		text-shadow: #222 2px 2px 0;
-		line-height: 36px;
-		// z-index: 1;
-	}
-	.filecell{
-		// -webkit-animation: fadeIn 1500ms;
-		height: 65px;
-	}
-	.filecell + .filecell
-	{
-		margin-top: 5px;
-	}
-	.text{
-	}
-	.size {
-		float: left;
-		position: relative;
-		padding: 25px 10px 14px 10px;
-		width: 85px;
-		height: 26px;
-		font-size: 15px;
-		text-align: right;
-		margin-right: 0px;
-		margin-left: 0px;
-		margin-top: 0px;
-		border-right: 5px solid #202020;
-		border-top-left-radius: 8px;
-		border-bottom-left-radius: 8px;
-		background-color: #252540; //#302C60;
-		color: #555;
-		text-shadow: #222 1px 1px 0;
-	}
+	position: relative;
+	font-size: 50px;
+	max-width: 100%;
+	text-align: center;
+	color: #333;
+	padding: 20px 20px 20px 20px;
+	border-radius: 8px;
+	text-shadow: #1a1a1a 2px 2px 0;
+}
+#drop {
+	position: relative;
+	padding: 20px 20px 20px 20px;
+	max-width: 100%;
+}
+.filename {
+	position: relative;
+	padding: 15px 10px 5px 10px;
+	margin-left: 0px;
+	height: 45px;
+	max-width: 100%;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	font-size: 30px;
+	color: #555;
+	white-space: nowrap;
+	background-color: #252525;
+	overflow-x: hidden;
+	text-shadow: #222 2px 2px 0;
+	line-height: 36px;
+}
+.filecell{
+	height: 65px;
+}
+.filecell + .filecell
+{
+	margin-top: 5px;
+}
+.text{
+}
+.size {
+	float: left;
+	position: relative;
+	padding: 25px 10px 14px 10px;
+	width: 85px;
+	height: 26px;
+	font-size: 15px;
+	text-align: right;
+	margin-right: 0px;
+	margin-left: 0px;
+	margin-top: 0px;
+	border-right: 5px solid #202020;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	background-color: #252540; //#302C60;
+	color: #555;
+	text-shadow: #222 1px 1px 0;
+}
