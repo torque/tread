@@ -20,20 +20,36 @@ Zepto(function($) {
       return document.title = 'Loading...';
     };
     fr.onloadend = function(ev) {
-      var file, files, rendered, torrent, _i, _len, _results;
+      var derp, file, files, number, target, toAnimate, torrent, _i, _len;
       torrent = bdecode(ev.target.result)[0];
       files = Backend.organizeFiles(torrent);
-      document.title = torrent.info.name;
       console.log("Torrent parsed in " + (new Date() - start) + "ms.");
-      _results = [];
-      for (_i = 0, _len = files.length; _i < _len; _i++) {
-        file = files[_i];
-        rendered = ich.filelist({
-          files: file
-        });
-        _results.push($("#drop").append(rendered));
+      derp = Backend.directoryStructure(torrent.info.name, torrent.info.files);
+      console.log("Files organized in " + (new Date() - start) + "ms.");
+      target = $("#drop");
+      number = Backend.onScreen();
+      toAnimate = number > files.length ? files.length : number;
+      for (_i = 0, _len = derp.length; _i < _len; _i++) {
+        file = derp[_i];
+        target.append("<div class='filecell " + file["class"] + "' id='" + file.id + "' style='margin-left:" + (file.depth * 10) + "px'><div class='size'>" + file.size + "</div><div class='filename'>" + file.name + "</div></div>");
       }
-      return _results;
+      $('.filecell').on('click', function(ev) {
+        var dir, subFiles;
+        if (ev.srcElement.parentNode.id !== '') {
+          dir = $('#' + ev.srcElement.parentNode.id);
+          subFiles = $('.' + ev.srcElement.parentNode.id);
+          if (dir.hasClass('file-tree-collapsed')) {
+            dir.removeClass('file-tree-collapsed');
+            subFiles.removeClass('file-tree-collapsed');
+            subFiles.show();
+          } else {
+            dir.addClass('file-tree-collapsed');
+            subFiles.hide();
+          }
+        }
+        return false;
+      });
+      return document.title = torrent.info.name;
     };
     fr.readAsBinaryString(ev.dataTransfer.files[0]);
     return false;

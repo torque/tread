@@ -38,6 +38,7 @@ body {
 }
 .filecell {
   height: 65px;
+  -webkit-transition: opacity 0.25s;
 }
 .filecell + .filecell {
   margin-top: 5px;
@@ -59,4 +60,5 @@ body {
   background-color: #252540;
   color: #555;
   text-shadow: #222 1px 1px 0;
+  z-index: 1;
 }
