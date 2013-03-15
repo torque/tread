@@ -12,11 +12,6 @@ Backend = { # I hear namespacing is popular nowadays (tl note: idk what the fuck
 			count++
 		Math.round(num/(Math.pow(1024,(count-1)))*100)/100 + post[count-1] # allows things like 1023 KiB but I don't care.
 	,
-	onScreen: ->
-		height = window.innerHeight - 20
-		cellHeight = 70 #pixels
-		Math.ceil(height/cellHeight)
-	,
 	classnameify: (str) ->
 		escape(str).replace(/[ ]/g,'-').replace(/[^-_0-9a-z]/ig,'').replace(/^([^a-z])/i,'s-s$1')
 	,

@@ -56,7 +56,7 @@ Zepto(function($) {
       return document.title = 'Loading...';
     };
     fr.onloadend = function(ev) {
-      var file, fileArray, number, target, torrent, _i, _len;
+      var dummy, file, fileArray, filecell, filename, size, target, torrent, _i, _len;
       torrent = bcodec.bdecode(ev.target.result)[0];
       console.log("Torrent parsed in " + (new Date() - start) + "ms.");
       fileArray = !Backend.singular(torrent) ? Backend.directoryStructure(torrent.info.name, torrent.info.files) : [
@@ -70,11 +70,26 @@ Zepto(function($) {
       ];
       console.log("Files organized in " + (new Date() - start) + "ms.");
       target = $("#container");
-      number = Backend.onScreen();
+      dummy = document.createDocumentFragment();
       for (_i = 0, _len = fileArray.length; _i < _len; _i++) {
         file = fileArray[_i];
-        target.append("<div class='filecell " + file["class"] + "' id='" + file.id + "' style='margin-left:" + (file.depth * 10) + "px'><div class='size'>" + file.size + "</div><div class='filename'>" + file.name + "</div></div>");
+        filecell = document.createElement('div');
+        filecell.className = 'filecell ' + file["class"];
+        filecell.id = file.id;
+        filecell.style.marginLeft = file.depth * 10 + 'px';
+        size = document.createElement('div');
+        size.className = 'size';
+        size.innerHTML = file.size;
+        filename = document.createElement('div');
+        filename.className = 'filename';
+        filename.innerHTML = file.name;
+        filecell.appendChild(size);
+        filecell.appendChild(filename);
+        dummy.appendChild(filecell);
       }
+      console.log("DocumentFragment accomplished in " + (new Date() - start) + "ms.");
+      target.append(dummy);
+      console.log("Rows jammed in in " + (new Date() - start) + "ms.");
       $('.filecell').on('click', function(ev) {
         var dir, subFiles;
         if (ev.srcElement.parentNode.id !== '') {

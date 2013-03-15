@@ -16,12 +16,6 @@ Backend = {
     }
     return Math.round(num / (Math.pow(1024, count - 1)) * 100) / 100 + post[count - 1];
   },
-  onScreen: function() {
-    var cellHeight, height;
-    height = window.innerHeight - 20;
-    cellHeight = 70;
-    return Math.ceil(height / cellHeight);
-  },
   classnameify: function(str) {
     return escape(str).replace(/[ ]/g, '-').replace(/[^-_0-9a-z]/ig, '').replace(/^([^a-z])/i, 's-s$1');
   },

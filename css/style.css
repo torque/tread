@@ -66,6 +66,7 @@ body {
 }
 #messages.gone {
   -webkit-animation: vanish 0.5s ease-in;
+  opacity: 0;
 }
 #container {
   position: relative;

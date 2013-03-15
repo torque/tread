@@ -1,6 +1,6 @@
 # some flimflammery to stop chrome from loading the dropped document in the window
-document.ondrop = () -> false
-document.ondragover = () -> false
+document.ondrop = -> false
+document.ondragover = -> false
 bcodec = new Bcodec
 
 Zepto ($) -> # equivalent to $(document).ready
@@ -24,7 +24,7 @@ Zepto ($) -> # equivalent to $(document).ready
 			message = $('#' + id)
 			message.removeClass 'incoming'
 			message.addClass 'outgoing'
-			setTimeout () ->
+			setTimeout ->
 				message.remove()
 			, 1000
 
@@ -54,14 +54,29 @@ Zepto ($) -> # equivalent to $(document).ready
 				class: ''
 				depth: 0
 			}]
-			console.log "Files organized in #{new Date()-start}ms."
 			# console.log fileArray
+			console.log "Files organized in #{new Date()-start}ms."
 			target = $("#container")
-			number = Backend.onScreen()
-
+			dummy = document.createDocumentFragment()
 			for file in fileArray
-				target.append "<div class='filecell #{file.class}' id='#{file.id}' style='margin-left:#{file.depth*10}px'><div class='size'>#{file.size}</div><div class='filename'>#{file.name}</div></div>"
-			
+				filecell = document.createElement 'div'
+				filecell.className = 'filecell ' + file.class
+				filecell.id = file.id
+				filecell.style.marginLeft = file.depth*10 + 'px'
+				size = document.createElement 'div'
+				size.className = 'size'
+				size.innerHTML = file.size
+				filename = document.createElement 'div'
+				filename.className = 'filename'
+				filename.innerHTML = file.name
+				filecell.appendChild size
+				filecell.appendChild filename
+				dummy.appendChild filecell
+
+			console.log "DocumentFragment accomplished in #{new Date()-start}ms."
+			target.append dummy
+			console.log "Rows jammed in in #{new Date()-start}ms."
+
 			$('.filecell').on 'click', (ev) ->
 				if ev.srcElement.parentNode.id isnt ''
 					dir = $('#' + ev.srcElement.parentNode.id)
@@ -74,12 +89,12 @@ Zepto ($) -> # equivalent to $(document).ready
 						dir.addClass 'file-tree-collapsed'
 						subFiles.hide()
 				false
+
 			document.title = torrent.info.name
 			messages.addClass 'gone'
-			messages.bind 'webkitAnimationEnd', () ->
+			messages.bind 'webkitAnimationEnd', ->
 				messages.hide()
 			$('#shield').hide()
-				# console.log ev.target.id + ' has been clicked.'
 
 		fr.readAsBinaryString ev.dataTransfer.files[0]
 		false
