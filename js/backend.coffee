@@ -12,28 +12,6 @@ Backend = { # I hear namespacing is popular nowadays (tl note: idk what the fuck
 			count++
 		Math.round(num/(Math.pow(1024,(count-1)))*100)/100 + post[count-1] # allows things like 1023 KiB but I don't care.
 	,
-	organizeFiles: (torrent) ->
-		# torrent.info.paths
-		files = []
-		unless Backend.singular torrent
-			for file in torrent.info.files
-				pathto = ""
-				pathto += dir+'/' for dir in file.path
-				files.push {
-					name: file.path[file.path.length-1],
-					path: pathto,
-					size: Backend.humanize(file.length),
-					rawsize: file.length
-				}
-		else
-			files.push {
-				name: torrent.info.name,
-				path: "",
-				size: Backend.humanize(torrent.info.length),
-				rawsize: torrent.info.length
-			}
-		files
-	,
 	onScreen: ->
 		height = window.innerHeight - 20
 		cellHeight = 70 #pixels
@@ -76,19 +54,19 @@ Backend = { # I hear namespacing is popular nowadays (tl note: idk what the fuck
 				for k in Object.keys(folder.subdirs).sort()
 					dir = folder.subdirs[k]
 					orderedFiles.push {
-						name: k,
-						size: "FOLDER",
-						class: dir.class,
-						depth: depth++,
+						name: k
+						size: "FOLDER"
+						class: dir.class
+						depth: depth++
 						id: dir.id
 					}
 					blargh dir
 					depth--
 			for file in folder.files.sort((a,b) -> a.name.toLowerCase() > b.name.toLowerCase() )
 				orderedFiles.push {
-					name: file.name,
-					size: file.size,
-					class: file.class,
+					name: file.name
+					size: file.size
+					class: file.class
 					depth: depth
 				}
 		blargh mess[baseDir]

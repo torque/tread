@@ -1,3 +1,31 @@
+@-webkit-keyframes dropin {
+  from {
+    top: calc(50% - 75px);
+    opacity: 0;
+  }
+  to {
+    top: calc(50% - 25px);
+    opacity: 1.0;
+  }
+}
+@-webkit-keyframes dropout {
+  from {
+    top: calc(50% - 25px);
+    opacity: 1.0;
+  }
+  to {
+    top: calc(50% + 25px);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes vanish {
+  from {
+    opacity: 1.0;
+  }
+  to {
+    opacity: 0;
+  }
+}
 body {
   position: absolute;
   margin: 0 0 0 0;
@@ -5,17 +33,41 @@ body {
   height: 100%;
   background-color: #202020;
 }
-.start {
-  position: relative;
+#shield {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+#messages {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #202020;
+  z-index: 2;
+}
+#messages .message {
+  position: fixed;
+  width: 100%;
+  top: calc(50% - 25px);
   font-size: 50px;
-  max-width: 100%;
+  line-height: 50px;
   text-align: center;
   color: #333;
-  padding: 20px 20px 20px 20px;
-  border-radius: 8px;
   text-shadow: #1a1a1a 2px 2px 0;
+  z-index: 3;
 }
-#drop {
+#messages .incoming {
+  -webkit-animation: dropin 0.3s ease-out;
+}
+#messages .outgoing {
+  -webkit-animation: dropout 0.3s ease-in;
+  opacity: 0;
+}
+#messages.gone {
+  -webkit-animation: vanish 0.5s ease-in;
+}
+#container {
   position: relative;
   padding: 20px 20px 20px 20px;
   max-width: 100%;

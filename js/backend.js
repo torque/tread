@@ -16,36 +16,6 @@ Backend = {
     }
     return Math.round(num / (Math.pow(1024, count - 1)) * 100) / 100 + post[count - 1];
   },
-  organizeFiles: function(torrent) {
-    var dir, file, files, pathto, _i, _j, _len, _len1, _ref, _ref1;
-    files = [];
-    if (!Backend.singular(torrent)) {
-      _ref = torrent.info.files;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        file = _ref[_i];
-        pathto = "";
-        _ref1 = file.path;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          dir = _ref1[_j];
-          pathto += dir + '/';
-        }
-        files.push({
-          name: file.path[file.path.length - 1],
-          path: pathto,
-          size: Backend.humanize(file.length),
-          rawsize: file.length
-        });
-      }
-    } else {
-      files.push({
-        name: torrent.info.name,
-        path: "",
-        size: Backend.humanize(torrent.info.length),
-        rawsize: torrent.info.length
-      });
-    }
-    return files;
-  },
   onScreen: function() {
     var cellHeight, height;
     height = window.innerHeight - 20;
